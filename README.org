@@ -73,6 +73,8 @@
   - You have to prepare the kernel modules
     - qmi_wwan (CONFIG_USB_NET_QMI_WWAN)
     - qcserial (CONFIG_USB_SERIAL_QUALCOMM)
+  - QMI commands
+    *qmicli* and *qmi-network* cmmand are required. Install them.
   - APN settings
     APN settings are written to /etc/qmi-network.conf.
     In my environment, I put only a line.
