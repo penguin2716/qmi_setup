@@ -1,0 +1,10 @@
+* What is this?
+  This is a shellscript make the internet connection with your
+  QMI supported wwan device like Sierra Wireless Inc. Gobi 3000.
+  Type following command to start,stop and restart the internet connection
+  and check your device status.
+
+  : ./qmi_setup.sh {start|stop|restart|status}
+
+* Tested environment and other information
+  See the source.
