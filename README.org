@@ -80,4 +80,4 @@
     : APN=mopera.net
 
 * For more detailed information
-  You can see the script source or, ask Google.
+  You can see the script source or ask Google.
