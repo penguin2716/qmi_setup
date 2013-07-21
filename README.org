@@ -1,10 +1,83 @@
-* What is this?
-  This is a shellscript make the internet connection with your
-  QMI supported wwan device like Sierra Wireless Inc. Gobi 3000.
-  Type following command to start,stop and restart the internet connection
+* Overview
+  This is a simple shellscript to make the internet connection with your
+  QMI (Qualcomm MSM Interface) supported wwan device like Sierra Wireless Inc. Gobi 3000.
+  QMI supported devices are listed in the source of Linux kernel
+  (check drivers/net/usb/qmi_wwan.c with your device id).
+  These devices are also listed at [[http://www.freedesktop.org/wiki/Software/ModemManager/SupportedDevices/]]
+  but not the all devices there.
+
+  Type following command to start, stop and restart the internet connection,
   and check your device status.
 
-  : ./qmi_setup.sh {start|stop|restart|status}
+  : % sudo ./qmi_setup.sh start
+  : Password: 
+  : [/dev/cdc-wdm0] Operating mode set successfully
+  : Loading profile...
+  :     APN: mopera.net
+  : Starting network with 'qmicli -d /dev/cdc-wdm0 --wds-start-network=mopera.net  --client-no-release-cid'...
+  : Saving state... (CID: 14)
+  : Saving state... (PDH: 19777600)
+  : Network started successfully
+  : dhcpcd[23821]: version 5.6.4 starting
+  : dhcpcd[23821]: wwp0s29u1u4: sending IPv6 Router Solicitation
+  : dhcpcd[23821]: wwp0s29u1u4: broadcasting for a lease
+  : dhcpcd[23821]: wwp0s29u1u4: offered 1.67.135.xx from 1.67.135.xx
+  : dhcpcd[23821]: wwp0s29u1u4: acknowledged 1.67.135.xx from 1.67.135.xx
+  : dhcpcd[23821]: wwp0s29u1u4: checking for 1.67.135.xx
+  : dhcpcd[23821]: wwp0s29u1u4: sending IPv6 Router Solicitation
+  : dhcpcd[23821]: wwp0s29u1u4: leased 1.67.135.xx for 7200 seconds
+  : dhcpcd[23821]: forked to background, child pid 23863
 
-* Tested environment and other information
-  See the source.
+  : % sudo ./qmi_setup.sh status
+  : Password: 
+  : Loading profile...
+  :     APN: mopera.net
+  : Loading previous state...
+  :     Previous CID: 14
+  :     Previous PDH: 19777600
+  : Getting status with 'qmicli -d /dev/cdc-wdm0 --wds-get-packet-service-status --client-cid=14 --client-no-release-cid'...
+  : Status: connected
+  : Signal strength is Good (-79 dBm)
+
+  : % sudo ./qmi_setup.sh stop
+  : Password: 
+  : Loading profile...
+  :     APN: mopera.net
+  : Loading previous state...
+  :     Previous CID: 14
+  :     Previous PDH: 19777600
+  : Stopping network with 'qmicli -d /dev/cdc-wdm0 --wds-stop-network=19777600 --client-cid=14'...
+  : Network stopped successfully
+  : Clearing state...
+
+  : $ sudo ./qmi_setup.sh status
+  : Password: 
+  : Loading profile...
+  : APN: mopera.net
+  : Getting status with 'qmicli -d /dev/cdc-wdm0 --wds-get-packet-service-status '...
+  : Status: disconnected
+  : Signal strength is Good (-79 dBm)
+
+
+* Tested environment
+  - ThinkPad X220 (4286-CTO)
+  - Gentoo/Linux, Linux Kernel 3.9.6
+  - Sierra Wireless, Inc. Gobi 3000 wireless wan module (FRU 60Y3257)
+    I recommend to check if your wwan module works fine
+    for your mobile broadband provider with Windows
+    especially if you imported the device from other country.
+    You may have to initialize your device for your region.
+  - NTT Docomo UIM card (Xi LTE SIM)
+
+* Requirements
+  - You have to prepare the kernel modules
+    - qmi_wwan (CONFIG_USB_NET_QMI_WWAN)
+    - qcserial (CONFIG_USB_SERIAL_QUALCOMM)
+  - APN settings
+    APN settings are written to /etc/qmi-network.conf.
+    In my environment, I put only a line.
+    : % cat /etc/qmi-network.conf
+    : APN=mopera.net
+
+* For more detailed information
+  You can see the script source or, ask Google.
